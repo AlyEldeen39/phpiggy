@@ -1,6 +1,6 @@
 <?php
 
-// include __DIR__ . '/src/Framework/Database.php';
+include __DIR__ . '/src/Framework/Database.php';
 
 use Framework\Database;
 
@@ -15,4 +15,8 @@ $db = new Database(
     ''
 );
 
-echo "Connected to Database Successfully!";
+$query = "SELECT * FROM products";
+
+$stmt = $db->connection->query($query);
+
+var_dump($stmt->fetchAll());

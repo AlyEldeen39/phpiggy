@@ -7,7 +7,9 @@
       "name": "Aly Eldeen"
     }
   ],
-  "require": {},
+  "require": {
+    "vlucas/phpdotenv": "*"
+  },
   "autoload": {
     "psr-4": {
       "Framework\\": "src/Framework",

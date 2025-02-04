@@ -15,8 +15,6 @@ $db = new Database(
     ''
 );
 
-$query = "SELECT * FROM products";
+$sqlFile = file_get_contents("./database.sql");
 
-$stmt = $db->connection->query($query);
-
-var_dump($stmt->fetchAll());
+$db->connection->query($sqlFile);

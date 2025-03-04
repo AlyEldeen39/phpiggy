@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Framework;
 
-use PDO;
-use PDOException;
+use PDO, PDOException, PDOStatement;
 
 class Database
 {
-    public PDO $connection;
+    private PDO $connection;
+    private PDOStatement $stmt;
 
     public function __construct(
         string $driver,
@@ -22,9 +22,40 @@ class Database
         $dsn = "{$driver}:{$config}";
 
         try {
-            $this->connection = new PDO($dsn, $username, $password);
+            $this->connection = new PDO($dsn, $username, $password, [
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]);
         } catch (PDOException $e) {
             die("Unable to Connect to Database");
         }
+    }
+
+    public function query(string $query, array $params = []): Database
+    {
+        $this->stmt = $this->connection->prepare($query);
+
+        $this->stmt->execute($params);
+
+        return $this;
+    }
+
+    public function count()
+    {
+        return $this->stmt->fetchColumn();
+    }
+
+    public function find()
+    {
+        return $this->stmt->fetch();
+    }
+
+    public function id()
+    {
+        return $this->connection->lastInsertId();
+    }
+
+    public function findAll()
+    {
+        return $this->stmt->fetchAll();
     }
 }

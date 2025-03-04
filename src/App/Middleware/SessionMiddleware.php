@@ -19,6 +19,12 @@ class SessionMiddleware implements MiddlewareInterface
             throw new SessionException("Headers Already Sent. Consider Enabling Output Buffering. Data Outputted from {$filename} - Line: {$line}");
         }
 
+        session_set_cookie_params([
+            'secure' => $_ENV['APP_ENV'] === "production",
+            'httponly' => true,
+            'samesite' => 'lax'
+        ]);
+
         session_start();
 
         $next();
